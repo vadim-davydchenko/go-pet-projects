@@ -8,29 +8,27 @@ import (
 )
 
 func main() {
-	var result float64
 
-	operation := getInputOperation()
-	numbers := getInputNumber()
-
-	switch operation {
-	case "AVG":
-		result = OperationAVG(numbers)
-	case "SUM":
-		result = OperationSUM(numbers)
-	case "MED":
-		result = OperationMED(numbers)
+	operations := map[string]func([]float64) float64{
+		"AVG": OperationAVG,
+		"SUM": OperationSUM,
+		"MED": OperationMED,
 	}
 
-	fmt.Printf("The Result of your %v operation = %v", operation, result)
+	operation := getInputOperation(operations)
+	numbers := getInputNumber()
+
+	result := operations[operation](numbers)
+
+	fmt.Printf("The Result of your %v operation = %v\n", operation, result)
 }
 
-func getInputOperation() string {
+func getInputOperation(operations map[string]func([]float64) float64) string {
 	var operation string
 	for {
 		fmt.Print("Select the operation to be calculated (AVG, SUM, MED):")
 		fmt.Scan(&operation)
-		if operation == "AVG" || operation == "SUM" || operation == "MED" {
+		if _, exists := operations[operation]; exists {
 			break
 		}
 		fmt.Println("Invalid operation. Please enter AVG, SUM, MED")
@@ -42,7 +40,7 @@ func getInputNumber() []float64 {
 	var listNumbers string
 	var sliceNumbers []float64
 
-	fmt.Print("Input numbers for operation:")
+	fmt.Print("Input numbers for operation in commas:")
 	fmt.Scan(&listNumbers)
 
 	stringNumbers := strings.Split(listNumbers, ",")
