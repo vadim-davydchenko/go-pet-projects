@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"shortLinks/configs"
+	"shortLinks/pkg/res"
 )
 
 type AuthHandlerDeps struct {
@@ -26,6 +27,10 @@ func (handler *AuthHandler) Login() http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		fmt.Println(handler.Config.Auth.Secret)
 		fmt.Println("Login")
+		data := LoginResponse{
+			Token: "123",
+		}
+		res.Json(w, data, 200)
 	}
 }
 
