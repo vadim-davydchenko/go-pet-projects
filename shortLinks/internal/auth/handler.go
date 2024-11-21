@@ -1,8 +1,10 @@
 package auth
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/mail"
 	"shortLinks/configs"
 	"shortLinks/pkg/res"
 )
@@ -25,8 +27,29 @@ func NewAuthHandler(router *http.ServeMux, deps AuthHandlerDeps) {
 
 func (handler *AuthHandler) Login() http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		fmt.Println(handler.Config.Auth.Secret)
-		fmt.Println("Login")
+
+		var payload LoginRequest
+		err := json.NewDecoder(req.Body).Decode(&payload)
+		if err != nil {
+			res.Json(w, err.Error(), 400)
+			return
+		}
+
+		if payload.Email == "" {
+			res.Json(w, "Email required", 400)
+
+		}
+		_, err = mail.ParseAddress(payload.Email)
+		if err != nil {
+			res.Json(w, "Email is invalid", 400)
+			return
+		}
+		if payload.Password == "" {
+			res.Json(w, "Password required", 400)
+			return
+		}
+		fmt.Println(payload)
+
 		data := LoginResponse{
 			Token: "123",
 		}
