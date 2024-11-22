@@ -1,11 +1,10 @@
 package auth
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/mail"
 	"shortLinks/configs"
+	"shortLinks/pkg/req"
 	"shortLinks/pkg/res"
 )
 
@@ -26,29 +25,12 @@ func NewAuthHandler(router *http.ServeMux, deps AuthHandlerDeps) {
 }
 
 func (handler *AuthHandler) Login() http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-
-		var payload LoginRequest
-		err := json.NewDecoder(req.Body).Decode(&payload)
+	return func(w http.ResponseWriter, r *http.Request) {
+		body, err := req.HandleBody[LoginRequest](&w, r)
 		if err != nil {
-			res.Json(w, err.Error(), 400)
 			return
 		}
-
-		if payload.Email == "" {
-			res.Json(w, "Email required", 400)
-
-		}
-		_, err = mail.ParseAddress(payload.Email)
-		if err != nil {
-			res.Json(w, "Email is invalid", 400)
-			return
-		}
-		if payload.Password == "" {
-			res.Json(w, "Password required", 400)
-			return
-		}
-		fmt.Println(payload)
+		fmt.Println(body)
 
 		data := LoginResponse{
 			Token: "123",
@@ -58,7 +40,11 @@ func (handler *AuthHandler) Login() http.HandlerFunc {
 }
 
 func (handler *AuthHandler) Register() http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		fmt.Println("Register")
+	return func(w http.ResponseWriter, r *http.Request) {
+		body, err := req.HandleBody[RegisterRequest](&w, r)
+		if err != nil {
+			return
+		}
+		fmt.Println(body)
 	}
 }
