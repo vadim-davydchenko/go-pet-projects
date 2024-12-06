@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"shortLinks/configs"
 	"shortLinks/internal/auth"
-	"shortLinks/link"
+	"shortLinks/internal/link"
 	"shortLinks/pkg/db"
 	"shortLinks/pkg/middleware"
 )
