@@ -6,6 +6,7 @@ import (
 	"shortLinks/configs"
 	"shortLinks/internal/auth"
 	"shortLinks/internal/link"
+	"shortLinks/internal/user"
 	"shortLinks/pkg/db"
 	"shortLinks/pkg/middleware"
 )
@@ -17,10 +18,15 @@ func main() {
 
 	//Repositories
 	linkRepository := link.NewLinkRepository(db)
+	userRepository := user.NewUserRepository(db)
+
+	// Services
+	authService := auth.NewAuthService(userRepository)
 
 	// Handler
 	auth.NewAuthHandler(router, auth.AuthHandlerDeps{
-		Config: conf,
+		Config:      conf,
+		AuthService: authService,
 	})
 
 	link.NewLinkHandler(router, link.LinkHandlerDeps{
