@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"shortLinks/configs"
@@ -10,29 +9,9 @@ import (
 	"shortLinks/internal/user"
 	"shortLinks/pkg/db"
 	"shortLinks/pkg/middleware"
-	"time"
 )
 
 func main() {
-	ctx := context.Background()
-	ctxWithTimeout, cancel := context.WithTimeout(ctx, 2*time.Second)
-	defer cancel()
-
-	done := make(chan struct{})
-	go func() {
-		time.Sleep(3 * time.Second)
-		close(done)
-	}()
-
-	select {
-	case <-done:
-		fmt.Println("Done task")
-	case <-ctxWithTimeout.Done():
-		fmt.Println("Timeout")
-	}
-}
-
-func main2() {
 	conf := configs.LoadConfig()
 	db := db.NewDb(conf)
 	router := http.NewServeMux()
@@ -52,6 +31,7 @@ func main2() {
 
 	link.NewLinkHandler(router, link.LinkHandlerDeps{
 		LinkRepository: linkRepository,
+		Config:         conf,
 	})
 
 	// Middlewares
