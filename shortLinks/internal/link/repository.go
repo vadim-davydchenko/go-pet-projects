@@ -57,3 +57,9 @@ func (repo *LinkRepository) GetbyId(id uint) (*Link, error) {
 	}
 	return &link, nil
 }
+
+func (repo *LinkRepository) GetLinks(limit, offset int) []Link {
+	var links []Link
+	repo.Database.Table("links").Where("deleted_at IS NULL").Order("id ASC").Limit(limit).Offset(offset).Scan(&links)
+	return links
+}
