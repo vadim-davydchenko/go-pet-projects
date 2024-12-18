@@ -1,17 +1,18 @@
 package stat
 
 import (
-	"fmt"
 	"net/http"
+	"time"
+
 	"shortLinks/configs"
 	"shortLinks/pkg/event"
 	"shortLinks/pkg/middleware"
-	"time"
+	"shortLinks/pkg/res"
 )
 
 const (
-	FilterByDay   = "day"
-	FilterByMonth = "month"
+	GroupByDay   = "day"
+	GroupByMonth = "month"
 )
 
 type StatHandlerDeps struct {
@@ -44,10 +45,11 @@ func (h *StatHandler) GetStat() http.HandlerFunc {
 			return
 		}
 		by := r.URL.Query().Get("by")
-		if by != FilterByDay && by != FilterByMonth {
+		if by != GroupByDay && by != GroupByMonth {
 			http.Error(w, "Invalid by param", http.StatusBadRequest)
 			return
 		}
-		fmt.Println(from, to, by)
+		stats := h.StatRepository.GetStats(by, from, to)
+		res.Json(w, stats, 200)
 	}
 }

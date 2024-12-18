@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+
 	"shortLinks/configs"
 	"shortLinks/internal/auth"
 	"shortLinks/internal/link"
@@ -13,14 +14,13 @@ import (
 	"shortLinks/pkg/middleware"
 )
 
-func main() {
-
+func App() http.Handler {
 	conf := configs.LoadConfig()
 	db := db.NewDb(conf)
 	router := http.NewServeMux()
 	eventBus := event.NewEventBus()
 
-	//Repositories
+	// Repositories
 	linkRepository := link.NewLinkRepository(db)
 	userRepository := user.NewUserRepository(db)
 	statRepository := stat.NewStatRepository(db)
@@ -48,18 +48,23 @@ func main() {
 		Config:         conf,
 	})
 
+	go statService.AddClick()
+
 	// Middlewares
 	stack := middleware.Chain(
 		middleware.CORS,
 		middleware.Logging,
 	)
 
+	return stack(router)
+}
+
+func main() {
+	app := App()
 	server := http.Server{
 		Addr:    ":8081",
-		Handler: stack(router),
+		Handler: app,
 	}
-
-	go statService.AddClick()
 
 	fmt.Println("Server is listening on port 8081")
 	server.ListenAndServe()
