@@ -2,9 +2,9 @@ package main
 
 import (
 	"os"
-	"os/user"
 	"shortLinks/internal/link"
 	"shortLinks/internal/stat"
+	"shortLinks/internal/user"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
