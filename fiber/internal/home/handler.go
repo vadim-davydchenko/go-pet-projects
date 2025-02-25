@@ -1,6 +1,8 @@
 package home
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 type HomeHandler struct {
 	router fiber.Router
