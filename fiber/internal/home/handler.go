@@ -2,15 +2,18 @@ package home
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/rs/zerolog"
 )
 
 type HomeHandler struct {
-	router fiber.Router
+	router       fiber.Router
+	customLogger *zerolog.Logger
 }
 
-func NewHandler(router fiber.Router) {
+func NewHandler(router fiber.Router, customLogger *zerolog.Logger) {
 	h := &HomeHandler{
-		router: router,
+		router:       router,
+		customLogger: customLogger,
 	}
 	api := h.router.Group("/api")
 	api.Get("/", h.home)
