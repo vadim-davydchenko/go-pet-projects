@@ -7,5 +7,20 @@
 </head>
 <body>
   {{.Count}} - number users
+  <br />
+  {{ if .IsAdmin }}
+  <p>You are admin</p>
+  {{ else }}
+  <p>You are not admin</p>
+  {{ end }}
+  <br />
+  {{ if eq .Count 0 }}
+  <p>No users</p>
+  {{ else if lt .Count 10 }}
+  <p>Less than 10 users</p>
+  {{ else }}
+  <p>More than 10 users</p>
+  {{ end }}
+  <br />
 </body>
 </html>
