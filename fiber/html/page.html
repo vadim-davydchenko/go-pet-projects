@@ -1,20 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page</title>
-</head>
-<body>
-  <div>
-    {{ range .Names }}
-    <p>{{ . }}</p>
-    {{ end}}
-  </div>
-  <div>
-    {{ range .Users }}
-    <p>{{ .Id }} - {{ .Name }}</p>
-    {{ end}}
-  </div>
-</body>
-</html>
+{{ template "base" }}
+
+{{ define "title" }}
+<title>Home Page</title>
+{{ end }}
+
+{{ define "content" }}
+<p>Page 1</p>
+{{ end }}
