@@ -1,0 +1,13 @@
+package views
+
+import "go-pet-projects/fiber/views/components"
+import "go-pet-projects/fiber/views/layout"
+
+templ Main() {
+  <main>
+  @layout.Header() {
+    @components.Title("Найди работу своей мечты")
+  }
+  Main
+  </main>
+}
