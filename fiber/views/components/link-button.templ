@@ -1,6 +1,6 @@
 package components
 
-templ LinkButton(href string,) {
+templ LinkButton(href string) {
   @LinkButtonStyle()
   <a class="link-button" href={templ.SafeURL(href)}>{ children...}</a>
 }
