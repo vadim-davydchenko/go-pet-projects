@@ -1,6 +1,10 @@
 package vacancy
 
 import (
+	"go-pet-projects/fiber/pkg/tadapter"
+	"go-pet-projects/fiber/views/components"
+
+	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
 )
@@ -16,11 +20,16 @@ func NewHandler(router fiber.Router, customLogger *zerolog.Logger) {
 		customLogger: customLogger,
 	}
 	vacancyGroup := h.router.Group("/vacancy")
-	vacancyGroup.Post("/vacancy", h.createVacancy)
+	vacancyGroup.Post("/", h.createVacancy)
 }
 
 func (h *VacancyHandler) createVacancy(c *fiber.Ctx) error {
 	email := c.FormValue("email")
-	h.customLogger.Info().Msg(email)
-	return c.SendString("Home")
+	var component templ.Component
+	if email == "" {
+		component = components.Notification("He задан email", components.NotificationFail)
+		return tadapter.Render(c, component)
+	}
+	component = components.Notification("Вакансия успешно создана", components.NotificationSuccess)
+	return tadapter.Render(c, component)
 }
