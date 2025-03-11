@@ -4,6 +4,7 @@ import (
 	"go-pet-projects/fiber/pkg/tadapter"
 	"go-pet-projects/fiber/pkg/validator"
 	"go-pet-projects/fiber/views/components"
+	"time"
 
 	"github.com/a-h/templ"
 	"github.com/gobuffalo/validate"
@@ -33,6 +34,7 @@ func (h *VacancyHandler) createVacancy(c *fiber.Ctx) error {
 	errors := validate.Validate(
 		&validators.EmailIsPresent{Name: "Email", Field: form.Email, Message: "Email not present"},
 	)
+	time.Sleep(time.Second * 2)
 	var component templ.Component
 	if len(errors.Errors) > 0 {
 		component = components.Notification(validator.FormatError(errors), components.NotificationFail)
