@@ -4,6 +4,7 @@ import (
 	"go-pet-projects/fiber/pkg/tadapter"
 	"go-pet-projects/fiber/pkg/validator"
 	"go-pet-projects/fiber/views/components"
+	"net/http"
 
 	"github.com/a-h/templ"
 	"github.com/gobuffalo/validate"
@@ -49,8 +50,14 @@ func (h *VacancyHandler) createVacancy(c *fiber.Ctx) error {
 	var component templ.Component
 	if len(errors.Errors) > 0 {
 		component = components.Notification(validator.FormatError(errors), components.NotificationFail)
-		return tadapter.Render(c, component)
+		return tadapter.Render(c, component, http.StatusBadRequest)
+	}
+	err := h.repository.addVacancy(form)
+	if err != nil {
+		h.customLogger.Error().Msg(err.Error())
+		component = components.Notification("Occured error on server", components.NotificationFail)
+		return tadapter.Render(c, component, http.StatusBadRequest)
 	}
 	component = components.Notification("Вакансия успешно создана", components.NotificationSuccess)
-	return tadapter.Render(c, component)
+	return tadapter.Render(c, component, http.StatusOK)
 }
