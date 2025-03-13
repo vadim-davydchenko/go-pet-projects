@@ -3,8 +3,9 @@ package views
 import "go-pet-projects/fiber/views/components"
 import "go-pet-projects/fiber/views/layout"
 import "go-pet-projects/fiber/views/widgets"
+import "go-pet-projects/fiber/internal/vacancy"
 
-templ Main() {
+templ Main(vacancies []vacancy.Vacancy) {
   @layout.Layout(layout.LayoutProps{
     Title: "Найди работу своей мечты",
     MetaDescription: "Сайт по поиску работы мечты",
@@ -15,6 +16,20 @@ templ Main() {
       @components.Title("Найди работу своей мечты")
       @components.SubTitle("Простой поиск работы")
     }
+    <div>
+      for _, vacancy := range vacancies {
+        @components.VacancyCard(
+      components.VacancyCardProps{
+        Email: vacancy.Email,
+        Location: vacancy.Location,
+        Salary: vacancy.Salary,
+        CompanyType: vacancy.Type,
+        Company: vacancy.Company,
+        Role: vacancy.Role,
+        Createdat: vacancy.CreatedAt,
+    })
+      }
+    </div>
     <div class="main__submit-form">
       @widgets.VacanyForm()
     </div>

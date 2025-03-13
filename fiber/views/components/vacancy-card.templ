@@ -1,0 +1,100 @@
+package components
+
+import "time"
+import "github.com/rvflash/elapsed"
+
+type VacancyCardProps struct {
+  Createdat time.Time
+  Role string
+  Location string
+  Salary string
+  CompanyType string
+  Company string
+  Email string
+}
+
+templ VacancyCard(props VacancyCardProps) {
+  {{ date := elapsed.LocalTime(props.Createdat, "ru") }}
+  @VacancyCardStyle()
+  <div class="vacancy-card">
+    <div>
+      <span class="vacancy-card__createdat">{ date }</span>
+    </div>
+    <div class="vacancy-card__title">
+      <div class="vacancy-card__role">{ props.Role }</div>
+      <div class="vacancy-card__company">{ props.Company }</div>
+    </div>
+    <div class="vacancy-card__footer">
+      <div class="vacancy-card__stats">
+        <div class="vacancy-card__stat">
+          <img src="/public/icons/company-type.svg" alt="Icon company type">
+          <span>{ props.CompanyType }</span>
+        </div>
+        <div class="vacancy-card__stat">
+          <img src="/public/icons/salary.svg" alt="Icon salary">
+          <span>{ props.Salary }</span>
+        </div>
+        <div class="vacancy-card__stat">
+          <img src="/public/icons/location.svg" alt="Icon location">
+          <span>{ props.Location }</span>
+        </div>
+      </div>
+      <div>
+        @LinkButton("") {
+          <span>Откликнуться</span>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+templ VacancyCardStyle() {
+  <style>
+    .vacancy-card {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 40px;
+      border-radius: 20px;
+      background: var(--color-white);
+      box-shadow: 0px 3px 8px 0px rgba(48, 150,137, 0.08);
+    }
+    .vacancy-card__createdat {
+        border-radius: 8px;
+        box-shadow: 0px 3px 8px 0px rgba(48, 150,137, 0.08);
+        padding: 8px;
+        color: var(color-primary);
+    }
+    .vacancy-card__title {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .vacancy-card__role {
+      font-size: 28px;
+      font-family: 600;
+      color: var(--color-black);
+    }
+
+    .vacancy-card__company {
+      font-size: 16;
+      font-family: 400;
+      color: var(--color-black);
+    }
+
+    .vacancy-card__footer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .vacancy-card__stats {
+      display: flex;
+      gap: 24px;
+    }
+    .vacancy-card__stat {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+  </style>
+}
