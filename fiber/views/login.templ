@@ -1,0 +1,24 @@
+package views
+
+import "go-pet-projects/fiber/views/components"
+import "go-pet-projects/fiber/views/layout"
+
+templ Login() {
+  @layout.Layout(layout.LayoutProps{
+    Title: "Вход на сайт",
+    MetaDescription: "Войти на сайт поиска работы",
+  }) {
+    <main>
+      @LoginStyle()
+      @layout.Header() {
+      @components.Title("Войти на сайт")
+      @components.SubTitle("Войдите под своей учетной записью")
+    }
+    </main>
+  }
+}
+
+templ LoginStyle() {
+  <style>
+  </style>
+}

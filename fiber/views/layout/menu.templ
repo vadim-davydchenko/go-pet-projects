@@ -5,9 +5,11 @@ import "go-pet-projects/fiber/views/components"
 templ Menu() {
   @MenuStyle()
   <div class="menu">
-    <img src="/public/images/logo.svg" alt="logo" />
+    <a href="/">
+      <img src="/public/images/logo.svg" alt="logo" />
+    </a>
     <div class="menu_right">
-      <a class="menu_right_link">Войти</a>
+      <a class="menu_right_link" href="/login">Войти</a>
       @components.LinkButton("/register") {
         <span>Зарегистрироваться</span>
       }
@@ -24,6 +26,7 @@ templ MenuStyle() {
       max-width: 1290px;
       align-items: center;
       width: 100%;
+      margin-bottom: 100px;
     }
     .menu_right {
       display: flex;
